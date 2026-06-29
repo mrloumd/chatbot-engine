@@ -1,0 +1,18 @@
+services:
+  mongodb:
+    # Atlas Local: a local MongoDB that supports Atlas Vector Search ($vectorSearch).
+    # The plain `mongo` image does NOT support vector search.
+    image: mongodb/mongodb-atlas-local:latest
+    container_name: llm-chatbot-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+
+volumes:
+  mongo-data:
